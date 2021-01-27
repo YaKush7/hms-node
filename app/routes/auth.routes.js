@@ -6,7 +6,7 @@ module.exports = function (app) {
     rep.header("Access-Control-Allow-Headers", "x-access-token, Origin, Content-Type, Accept");
     next();
   });
-  app.post("/api/auth/signup", [verifySignUp.checkDuplicate], controller.signup);
+  app.post("/api/auth/signup", [verifySignUp.checkRole, verifySignUp.checkDuplicate], controller.signup);
 
   app.post("/api/auth/signin", controller.signin);
 };

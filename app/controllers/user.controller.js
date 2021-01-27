@@ -3,5 +3,5 @@ exports.allAccess = (req, rep) => {
 };
 
 exports.userAccess = (req, rep) => {
-  rep.status(200).send("patient content");
+  rep.status(200).send({ uid: req.uid, urole: req.urole, msg: "patient content" });
 };

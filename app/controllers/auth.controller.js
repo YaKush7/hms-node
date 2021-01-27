@@ -1,18 +1,19 @@
 const config = require("../config/auth.config");
 const db = require("../models");
 
-const Patient = db.patient;
+const Credentials = db.credentials;
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
 exports.signup = (req, rep) => {
-  const patient = new Patient({
+  const cred = new Credentials({
     id: req.body.id,
     password: bcrypt.hashSync(req.body.password, 8),
+    role: req.body.role,
   });
 
-  patient.save((err, patient) => {
+  cred.save((err, cred) => {
     if (err) {
       rep.status(500).send({ msg: err });
       return;
@@ -23,26 +24,35 @@ exports.signup = (req, rep) => {
 };
 
 exports.signin = (req, rep) => {
-  Patient.findOne({
+  if (!req.body.role) {
+    return rep.status(401).send({ accessToken: null, msg: "invalid role" });
+  }
+  Credentials.findOne({
     id: req.body.id,
-  }).exec((err, patient) => {
+    role: req.body.role,
+  }).exec((err, cred) => {
     if (err) {
       rep.status(500).send({ msg: err });
       return;
     }
 
-    if (!patient) {
+    if (!cred) {
       return rep.status(404).send({ msg: "User not found" });
     }
 
-    var isPassValid = bcrypt.compareSync(req.body.password, patient.password);
+    var isPassValid = bcrypt.compareSync(req.body.password, cred.password);
     if (!isPassValid) {
       return rep.status(401).send({ accessToken: null, msg: "invalid pass" });
     }
 
-    var token = jwt.sign({ uid: patient.id }, config.key, { expiresIn: 86400 });
+    if (cred.role !== req.body.role) {
+      return rep.status(401).send({ accessToken: null, msg: "invalid role" });
+    }
+
+    var token = jwt.sign({ uid: cred.id, urole: cred.role }, config.key, { expiresIn: 86400 });
     rep.status(200).send({
-      id: patient.id,
+      id: cred.id,
+      role: cred.role,
       accessToken: token,
     });
   });

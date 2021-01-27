@@ -14,12 +14,28 @@ verifyToken = (req, rep, next) => {
       return rep.status(401).send({ msg: "Unauthorized" });
     }
     req.uid = decoded.uid;
+    req.urole = decoded.urole;
     next();
   });
 };
 
+verifyRole = (req, rep, next) => {
+  let Role = req.headers["role"];
+
+  if (!Role) {
+    return rep.status(403).send({ msg: "No Role" });
+  }
+
+  if (db.ROLES.includes(Role)) {
+    next();
+  } else {
+    return rep.status(401).send({ msg: "Invlaid Role" });
+  }
+};
+
 const authJWT = {
   verifyToken,
+  verifyRole,
 };
 
 module.exports = authJWT;

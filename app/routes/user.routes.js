@@ -8,5 +8,5 @@ module.exports = function (app) {
   });
 
   app.get("/api/test/all", controller.allAccess);
-  app.get("/api/test/user", [authJWT.verifyToken], controller.userAccess);
+  app.get("/api/test/user", [authJWT.verifyRole, authJWT.verifyToken], controller.userAccess);
 };

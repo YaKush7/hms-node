@@ -1,14 +1,14 @@
 const db = require("../models");
-const Patient = db.patient;
+const Credentials = db.credentials;
 
 checkDuplicate = (req, rep, next) => {
-  Patient.findOne({ id: req.body.id }).exec((err, patient) => {
+  Credentials.findOne({ id: req.body.id, role: req.body.role }).exec((err, cred) => {
     if (err) {
       rep.status(500).send({ msg: err });
       return;
     }
 
-    if (patient) {
+    if (cred) {
       rep.status(400).send({ msg: "Failed user already exist" });
       return;
     }
@@ -17,8 +17,18 @@ checkDuplicate = (req, rep, next) => {
   });
 };
 
+checkRole = (req, rep, next) => {
+  if (db.ROLES.includes(req.body.role)) {
+    next();
+  } else {
+    rep.status(400).send({ msg: "Invalid Role" });
+    return;
+  }
+};
+
 const verifySignUp = {
   checkDuplicate,
+  checkRole,
 };
 
 module.exports = verifySignUp;
