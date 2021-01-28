@@ -2,6 +2,8 @@ const jwt = require("jsonwebtoken");
 const config = require("../config/auth.config");
 const db = require("../models");
 
+const Credentials = db.credentials;
+
 verifyToken = (req, rep, next) => {
   let token = req.headers["x-access-token"];
 
@@ -13,9 +15,23 @@ verifyToken = (req, rep, next) => {
     if (err) {
       return rep.status(401).send({ msg: "Unauthorized" });
     }
-    req.uid = decoded.uid;
-    req.urole = decoded.urole;
-    next();
+
+    Credentials.findOne({
+      id: decoded.uid,
+      role: req.headers["role"],
+    }).exec((err, cred) => {
+      if (err) {
+        return rep.status(403).send({ msg: "Error" });
+      }
+
+      if (!cred) {
+        return rep.status(401).send({ msg: "Unauthorized" });
+      }
+
+      req.uid = decoded.uid;
+      req.urole = decoded.urole;
+      next();
+    });
   });
 };
 

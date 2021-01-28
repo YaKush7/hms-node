@@ -4,7 +4,11 @@ const Patient = mongoose.model(
   "Patient",
   new mongoose.Schema({
     id: Number,
-    password: String,
+    name: String,
+    age: Number,
+    gender: Number,
+    phone: Number,
+    address: String,
   })
 );
 

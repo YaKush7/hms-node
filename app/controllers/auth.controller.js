@@ -29,7 +29,6 @@ exports.signin = (req, rep) => {
   }
   Credentials.findOne({
     id: req.body.id,
-    role: req.body.role,
   }).exec((err, cred) => {
     if (err) {
       rep.status(500).send({ msg: err });
