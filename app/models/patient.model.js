@@ -6,7 +6,7 @@ const Patient = mongoose.model(
     id: Number,
     name: String,
     age: Number,
-    gender: Number,
+    gender: String,
     phone: Number,
     address: String,
   })
