@@ -5,10 +5,13 @@ const Staff = mongoose.model(
   new mongoose.Schema({
     id: Number,
     name: String,
-    age: Number,
+    dob: Date,
     gender: String,
     phone: Number,
     address: String,
+    lvisit: Date,
+    email: String,
+    img_path: String,
   })
 );
 

@@ -45,7 +45,7 @@ verifyRole = (req, rep, next) => {
   if (db.ROLES.includes(Role)) {
     next();
   } else {
-    return rep.status(401).send({ msg: "Invlaid Role" });
+    return rep.status(401).send({ msg: "Invalid Role" });
   }
 };
 
