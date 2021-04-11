@@ -1,6 +1,7 @@
 const db = require("../models");
 const Patient = db.patient;
 const Staff = db.staff;
+const Patient_Data = db.patient_data;
 
 exports.allAccess = (req, rep) => {
   rep.status(200).send("public content");
@@ -22,7 +23,6 @@ exports.patientAccess = (req, rep) => {
 };
 
 exports.staffAccess = (req, rep) => {
-  console.log("there");
   Staff.findOne({ id: req.uid }).exec((err, staff) => {
     if (err) {
       return rep.status(403).send({ msg: "Error" });
@@ -34,5 +34,20 @@ exports.staffAccess = (req, rep) => {
 
     console.log(staff);
     rep.status(200).send({ uid: req.uid, urole: req.urole, data: { ...staff } });
+  });
+};
+
+exports.getPatientData = (req, res) => {
+  Patient_Data.find({ id: req.uid }).exec((err, data) => {
+    if (err) {
+      return res.status(403).send({ msg: "Error" });
+    }
+
+    if (!data) {
+      return res.status(403).send({ msg: "No data" });
+    }
+
+    console.log(data);
+    res.status(200).send({ records: { data } });
   });
 };

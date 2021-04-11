@@ -10,4 +10,5 @@ module.exports = function (app) {
   app.get("/api/test/all", controller.allAccess);
   app.get("/api/test/patient", [authJWT.verifyRole, authJWT.verifyToken], controller.patientAccess);
   app.get("/api/test/staff", [authJWT.verifyRole, authJWT.verifyToken], controller.staffAccess);
+  app.get("/api/test/patientdata", [authJWT.verifyRole, authJWT.verifyToken], controller.getPatientData);
 };

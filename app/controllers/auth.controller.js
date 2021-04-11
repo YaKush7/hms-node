@@ -80,7 +80,7 @@ exports.signup = (req, rep) => {
 
 exports.signin = (req, rep) => {
   if (!req.body.role) {
-    return rep.status(401).send({ accessToken: null, msg: "invalid role" });
+    return rep.status(401).send({ accessToken: null, msg: "Invalid" });
   }
   Credentials.findOne({
     id: req.body.id,
@@ -91,16 +91,16 @@ exports.signin = (req, rep) => {
     }
 
     if (!cred) {
-      return rep.status(404).send({ msg: "User not found" });
+      return rep.status(404).send({ msg: "Invalid" });
     }
 
     var isPassValid = bcrypt.compareSync(req.body.password, cred.password);
     if (!isPassValid) {
-      return rep.status(401).send({ accessToken: null, msg: "invalid pass" });
+      return rep.status(401).send({ accessToken: null, msg: "Invalid" });
     }
 
     if (cred.role !== req.body.role) {
-      return rep.status(401).send({ accessToken: null, msg: "invalid role" });
+      return rep.status(401).send({ accessToken: null, msg: "Invalid" });
     }
 
     var token = jwt.sign({ uid: cred.id, urole: cred.role }, config.key, { expiresIn: 86400 });
