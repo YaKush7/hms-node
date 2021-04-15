@@ -2,6 +2,7 @@ const db = require("../models");
 const Patient = db.patient;
 const Staff = db.staff;
 const Patient_Data = db.patient_data;
+const Appointment = db.appointment;
 
 exports.allAccess = (req, rep) => {
   rep.status(200).send("public content");
@@ -49,5 +50,28 @@ exports.getPatientData = (req, res) => {
 
     console.log(data);
     res.status(200).send({ records: { data } });
+  });
+};
+
+exports.saveAppointment = (req, res) => {
+  const appoint = new Appointment({
+    name: req.body.name,
+    gender: req.body.gender,
+    age: req.body.age,
+    phone: req.body.phone,
+    specialist: req.body.specialist,
+    slot: req.body.slot,
+  });
+
+  appoint.save((err, appoint) => {
+    if (err) {
+      res.status(500).send({ msg: err });
+      return;
+    }
+
+    if (appoint) {
+      res.send({ msg: "Appointment Requested" });
+      return;
+    }
   });
 };
