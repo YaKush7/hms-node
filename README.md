@@ -10,6 +10,7 @@ Hospital Management System (NODE Express Mongoose)
 - Routes (Defines routes and functionality of different APIs)
 
 ## List of APIs :page_with_curl:
+- APIs are used by [React part of HMS](https://github.com/Yash227/hms-react)
 
 ### Authetication :dvd:
 
