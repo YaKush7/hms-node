@@ -8,6 +8,7 @@ const Appointment = mongoose.model(
     age: String,
     phone: String,
     specialist: String,
+    slot: String,
   })
 );
 
