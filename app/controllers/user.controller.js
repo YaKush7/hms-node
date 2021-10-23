@@ -68,6 +68,28 @@ exports.getPatientData = (req, res) => {
   }
 };
 
+exports.setPatientData = (req, res) => {
+  const pdata = new Patient_Data({
+    id: req.query.id,
+    prescription: "link1",
+    doc_id: req.query.doc_id,
+    doc_name: req.query.doc_name,
+    date: req.query.date,
+    pat_name: req.query.pat_name,
+  });
+
+  pdata.save((err, doc) => {
+    if (err) {
+      res.status(500).send({ msg: err });
+      return;
+    }
+
+    if (doc) {
+      res.status(200).send({ msg: "Saved" });
+    }
+  });
+};
+
 exports.saveAppointment = (req, res) => {
   const appoint = new Appointment({
     name: req.body.name,

@@ -6,6 +6,7 @@ const Patient_data = mongoose.model(
     id: Number,
     prescription: String,
     doc_id: Number,
+    doc_name: String,
     date: Date,
     pat_name: String,
   })

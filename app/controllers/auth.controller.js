@@ -53,9 +53,10 @@ exports.signup = (req, rep) => {
       phone: req.body.phone,
       email: req.body.email,
       gender: req.body.gender,
-      lvisit: "0000-00-00T00:00:00.000+00:00",
+      lvisit: "2021-12-10",
+      role: req.body.role,
       img_path: ".\\TempResources\\default.jpeg",
-      dob: req.body.dob + "T00:00:00.000+00:00",
+      dob: req.body.dob,
     });
 
     sta.save((err, sta) => {

@@ -12,6 +12,7 @@ const Staff = mongoose.model(
     lvisit: Date,
     email: String,
     img_path: String,
+    role: String,
   })
 );
 
