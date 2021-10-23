@@ -39,18 +39,33 @@ exports.staffAccess = (req, rep) => {
 };
 
 exports.getPatientData = (req, res) => {
-  Patient_Data.find({ id: req.uid }).exec((err, data) => {
-    if (err) {
-      return res.status(403).send({ msg: "Error" });
-    }
+  if (req.urole === "patient") {
+    Patient_Data.find({ id: req.uid }).exec((err, data) => {
+      if (err) {
+        return res.status(403).send({ msg: "Error" });
+      }
 
-    if (!data) {
-      return res.status(403).send({ msg: "No data" });
-    }
+      if (!data) {
+        return res.status(403).send({ msg: "No data" });
+      }
 
-    console.log(data);
-    res.status(200).send({ records: { data } });
-  });
+      console.log(data);
+      res.status(200).send({ records: { data } });
+    });
+  } else {
+    Patient_Data.find({ doc_id: req.uid }).exec((err, data) => {
+      if (err) {
+        return res.status(403).send({ msg: "Error" });
+      }
+
+      if (!data) {
+        return res.status(403).send({ msg: "No data" });
+      }
+
+      console.log(data);
+      res.status(200).send({ records: { data } });
+    });
+  }
 };
 
 exports.saveAppointment = (req, res) => {
